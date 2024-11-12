@@ -7,6 +7,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\KegiatanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KategoriKegiatanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +52,14 @@ Route::group(['prefix' => 'level'], function () {
     Route::delete('/{id}', [LevelController::class, 'destroy']); // menghapus data level
 });
 
+Route::group(['prefix' => 'kategori_kegiatan'], function () {
+    Route::get('/', [KategoriKegiatanController::class, 'index']);          // menampilkan halaman awal level
+    Route::post('/list', [KategoriKegiatanController::class, 'list']);      // menampilkan data level dalam bentuk json untuk datatables
+    Route::get('/create', [KategoriKegiatanController::class, 'create']);   // menampilkan halaman form tambah level
+    Route::post('/', [KategoriKegiatanController::class, 'store']);         // menyimpan data level baru
+    Route::get('/{id}', [KategoriKegiatanController::class, 'show']);       // menampilkan detail level
+    Route::get('/{id}/edit', [KategoriKegiatanController::class, 'edit']);  // menampilkan halaman form edit level
+    Route::put('/{id}', [KategoriKegiatanController::class, 'update']);     // menyimpan perubahan data level
+    Route::delete('/{id}', [KategoriKegiatanController::class, 'destroy']); // menghapus data level
+});
 });
