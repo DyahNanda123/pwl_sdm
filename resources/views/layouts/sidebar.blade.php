@@ -32,32 +32,49 @@
                     <p>Data User</p>
                 </a>
             </li>
-            {{-- <li class="nav-header">Data Barang</li>
+            
+            <!-- Tambahan untuk Data Kegiatan -->
+            <li class="nav-header">Data Kegiatan</li>
             <li class="nav-item">
-                <a href="{{ url('/kategori') }}" class="nav-link {{ ($activeMenu == 'kategori') ? 'active' : '' }}">
-                    <i class="nav-icon far fa-bookmark"></i>
-                    <p>Kategori Barang</p>
+                <a href="{{ url('/kategori-kegiatan') }}" class="nav-link {{ ($activeMenu == 'kategori-kegiatan') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-list"></i>
+                    <p>Kategori Kegiatan</p>
+                </a>
+                <ul class="nav nav-treeview" style="padding-left: 20px;">
+                    <li class="nav-item">
+                        <a href="{{ url('/kegiatan-terprogram') }}" class="nav-link {{ ($activeMenu == 'kegiatan-terprogram') ? 'active' : '' }}">
+                            <span style="margin-right: 8px;">•</span>
+                            <p>Kegiatan Terprogram</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/kegiatan-non-terprogram') }}" class="nav-link {{ ($activeMenu == 'kegiatan-non-terprogram') ? 'active' : '' }}">
+                            <span style="margin-right: 8px;">•</span>
+                            <p>Kegiatan Non-Terprogram</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/kegiatan-non-jti') }}" class="nav-link {{ ($activeMenu == 'kegiatan-non-jti') ? 'active' : '' }}">
+                            <span style="margin-right: 8px;">•</span>
+                            <p>Kegiatan Non-JTI</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
+            
+            <li class="nav-item">
+                <a href="{{ url('/daftar-kegiatan') }}" class="nav-link {{ ($activeMenu == 'daftar-kegiatan') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-calendar-alt"></i>
+                    <p>Daftar Kegiatan</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/barang') }}" class="nav-link {{ ($activeMenu == 'barang') ? 'active' : '' }}">
-                    <i class="nav-icon far fa-list-alt"></i>
-                    <p>Data Barang</p>
-                </a>
-            </li>
-            <li class="nav-header">Data Transaksi</li>
-            <li class="nav-item">
-                <a href="{{ url('/stok') }}" class="nav-link {{ ($activeMenu == 'stok') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-cubes"></i>
-                    <p>Stok Barang</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url('/penjualan') }}" class="nav-link {{ ($activeMenu == 'penjualan') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-cash-register"></i>
-                    <p>Transaksi Penjualan</p>
+                <a href="{{ url('/daftar-dosen') }}" class="nav-link {{ ($activeMenu == 'daftar-dosen') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user-tie"></i>
+                    <p>Daftar Dosen</p>
                 </a>
             </li>
         </ul>
     </nav>
-</div> --}}
+</div>
