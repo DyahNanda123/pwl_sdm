@@ -4,7 +4,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h3 class="card-title">Halo, apa kabar!</h3>
+    <h3 class="card-title">MANAJEMEN SDM JTI POLINEMA</h3>
     <div class="card-tools"></div>
   </div>
   <div class="card-body">

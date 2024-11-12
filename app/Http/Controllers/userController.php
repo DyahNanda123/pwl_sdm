@@ -1,77 +1,153 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Yajra\DataTables\DataTables;
 
-class userController extends Controller
+class UserController extends Controller
 {
     public function index()
     {
-        // $data = [
-        //     'NIP' => '1122334455', // Menambahkan NIP sesuai struktur baru
-        //     'nama' => 'Pelanggan',
-        //     'email' => 'pelanggan@example.com', // Menambahkan email
-        //     'password' => Hash::make('12345'),
-        //     'role' => 3 // Mengganti level_id dengan role
-        // ];
-        // userModel::insert($data);
-
-        $data = [
-            'nama' => 'Pelanggan Pertama',
+        $breadcrumb = (object) [
+            'title' => 'Daftar User',
+            'list' => ['Home', 'User']
         ];
-        userModel::where('NIP', '1122334455')->update($data); // Mengganti 'username' dengan 'NIP'        
-
-        $user = userModel::all();
-        return view('user', ['data' => $user]);
+        $page = (object) [
+            'title' => 'Daftar user yang terdaftar dalam sistem'
+        ];
+        $activeMenu = 'user'; // set menu yang sedang aktif
+        return view('user.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
     }
-    public function tambah(){
-            return view('user_tambah');
-        }
-    
-        public function tambah_simpan(Request $request) {
-            userModel::create([
-                'NIP' => $request->NIP,
-                'nama' => $request->nama,
-                'email' => $request->email,
-                'password' => Hash::make($request->password), // Perbaikan: menambahkan tanda '$' yang hilang di Hash::make
-                'role' => $request->role
-            ]);
+
+    // Ambil data user dalam bentuk json untuk datatables
+    public function list(Request $request)
+    {
+        $users = UserModel::select('user_id', 'NIP', 'nama', 'email', 'role')
+            ->get();
         
-            return redirect('/user');
+        return DataTables::of($users)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($user) { // menambahkan kolom aksi
+                $btn = '<a href="' . url('/user/' . $user->user_id) . '" class="btn btn-info btn-sm">Detail</a> ';
+                $btn .= '<a href="' . url('/user/' . $user->user_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
+                $btn .= '<form class="d-inline-block" method="POST" action="' .
+                    url('/user/' . $user->user_id) . '">'
+                    . csrf_field() . method_field('DELETE') .
+                    '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
+                return $btn;
+            })
+            ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html
+            ->make(true);
+    }
+
+    // Menampilkan halaman form tambah user
+    public function create()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Tambah User',
+            'list' => ['Home', 'User', 'Tambah']
+        ];
+        $page = (object) [
+            'title' => 'Tambah user baru'
+        ];
+
+        $activeMenu = 'user'; // set menu yang sedang aktif
+        return view('user.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+    }
+
+    // Menyimpan data user baru
+    public function store(Request $request)
+    {
+        $request->validate([
+            'NIP'      => 'required|string|min:3|unique:m_user,NIP',
+            'nama'     => 'required|string|max:100',
+            'email'    => 'required|email|unique:m_user,email',
+            'password' => 'required|min:5',
+            'role'     => 'required|string|max:50' // Menambahkan validasi role
+        ]);
+
+        UserModel::create([
+            'NIP'      => $request->NIP,
+            'nama'     => $request->nama,
+            'email'    => $request->email,
+            'password' => bcrypt($request->password), // password dienkripsi
+            'role'     => $request->role
+        ]);
+
+        return redirect('/user')->with('success', 'Data user berhasil disimpan');
+    }
+
+    // Menampilkan detail user
+    public function show(string $id)
+    {
+        $user = UserModel::find($id);
+        $breadcrumb = (object) [
+            'title' => 'Detail User',
+            'list' => ['Home', 'User', 'Detail']
+        ];
+        $page = (object) [
+            'title' => 'Detail user'
+        ];
+        $activeMenu = 'user';
+        return view('user.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+    }
+
+    // Menampilkan halaman untuk edit user
+    public function edit(string $id)
+    {
+        $user = UserModel::find($id);
+
+        $breadcrumb = (object) [
+            'title' => 'Edit User',
+            'list' => ['Home', 'User', 'Edit']
+        ];
+        $page = (object) [
+            'title' => 'Edit user'
+        ];
+        $activeMenu = 'user'; // set menu yang sedang aktif
+        return view('user.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+    }
+
+    // Menyimpan perubahan data user
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'NIP'      => 'required|string|min:3|unique:m_user,NIP,' . $id . ',user_id',
+            'nama'     => 'required|string|max:100',
+            'email'    => 'required|email|unique:m_user,email,' . $id . ',user_id',
+            'password' => 'nullable|min:5',
+            'role'     => 'required|string|max:50'
+        ]);
+
+        $user = UserModel::find($id);
+
+        $user->update([
+            'NIP'      => $request->NIP,
+            'nama'     => $request->nama,
+            'email'    => $request->email,
+            'password' => $request->password ? bcrypt($request->password) : $user->password,
+            'role'     => $request->role
+        ]);
+
+        return redirect('/user')->with('success', 'Data user berhasil diubah');
+    }
+
+    // Menghapus data user
+    public function destroy(string $id)
+    {
+        $check = UserModel::find($id);
+        if (!$check) {
+            return redirect('/user')->with('error', 'Data user tidak ditemukan');
         }
 
-        public function ubah($id) {
-            $user = UserModel::find($id);
-            return view('user_ubah', ['data' => $user]);
+        try {
+            UserModel::destroy($id);
+            return redirect('/user')->with('success', 'Data user berhasil dihapus');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect('/user')->with('error', 'Data user gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
         }
-        
-        public function ubah_simpan($id, Request $request) {
-            $user = UserModel::find($id);
-        
-            // Update data user dengan data yang baru
-            $user->NIP = $request->NIP;
-            $user->nama = $request->nama;
-            $user->email = $request->email;
-        
-            // Jika password diisi, maka hash password tersebut, jika tidak biarkan tetap
-            if ($request->password) {
-                $user->password = Hash::make($request->password);
-            }
-        
-            $user->role = $request->role;
-        
-            // Simpan perubahan
-            $user->save();
-        
-            return redirect('/user');
-        }
-
-        public function hapus($id){
-        $user = userModel::find($id);
-        $user->delete();
-        return redirect('/user');
-        }
-        
+    }
 }
