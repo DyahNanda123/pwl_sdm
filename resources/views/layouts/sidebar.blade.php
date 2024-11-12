@@ -32,37 +32,33 @@
                     <p>Data User</p>
                 </a>
             </li>
-            
-            <!-- Tambahan untuk Data Kegiatan -->
+
+            <!-- Data Kegiatan -->
             <li class="nav-header">Data Kegiatan</li>
-            <li class="nav-item">
+            <li class="nav-item {{ ($activeMenu == 'kategori-kegiatan') ? 'menu-open' : '' }}">
                 <a href="{{ url('/kategori-kegiatan') }}" class="nav-link {{ ($activeMenu == 'kategori-kegiatan') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-list"></i>
                     <p>Kategori Kegiatan</p>
                 </a>
-                <ul class="nav nav-treeview" style="padding-left: 20px;">
+                <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="{{ url('/kegiatan-terprogram') }}" class="nav-link {{ ($activeMenu == 'kegiatan-terprogram') ? 'active' : '' }}">
-                            <span style="margin-right: 8px;">•</span>
+                        <a href="{{ route('kategori.kegiatan', 1) }}" class="nav-link {{ ($activeMenu == 'kegiatan-terprogram') ? 'active' : '' }}">
                             <p>Kegiatan Terprogram</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/kegiatan-non-terprogram') }}" class="nav-link {{ ($activeMenu == 'kegiatan-non-terprogram') ? 'active' : '' }}">
-                            <span style="margin-right: 8px;">•</span>
+                        <a href="{{ route('kategori.kegiatan', 2) }}" class="nav-link {{ ($activeMenu == 'kegiatan-non-terprogram') ? 'active' : '' }}">
                             <p>Kegiatan Non-Terprogram</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/kegiatan-non-jti') }}" class="nav-link {{ ($activeMenu == 'kegiatan-non-jti') ? 'active' : '' }}">
-                            <span style="margin-right: 8px;">•</span>
+                        <a href="{{ route('kategori.kegiatan', 3) }}" class="nav-link {{ ($activeMenu == 'kegiatan-non-jti') ? 'active' : '' }}">
                             <p>Kegiatan Non-JTI</p>
                         </a>
                     </li>
                 </ul>
             </li>
-            
-            
+
             <li class="nav-item">
                 <a href="{{ url('/daftar-kegiatan') }}" class="nav-link {{ ($activeMenu == 'daftar-kegiatan') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-calendar-alt"></i>

@@ -4,6 +4,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\KegiatanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -49,4 +50,19 @@ Route::group(['prefix' => 'level'], function () {
     Route::put('/{id}', [LevelController::class, 'update']);     // menyimpan perubahan data level
     Route::delete('/{id}', [LevelController::class, 'destroy']); // menghapus data level
 });
+
+Route::group(['prefix' => 'kegiatan'], function () {
+    Route::get('/', [KegiatanController::class, 'index']);            // Menampilkan halaman awal kegiatan
+    Route::post('/list', [KegiatanController::class, 'list']);        // Menampilkan data kegiatan dalam bentuk JSON untuk datatables
+    Route::get('/create', [KegiatanController::class, 'create']);     // Menampilkan halaman form tambah kegiatan
+    Route::post('/', [KegiatanController::class, 'store']);           // Menyimpan data kegiatan baru
+    Route::get('/{id}', [KegiatanController::class, 'show']);         // Menampilkan detail kegiatan
+    Route::get('/{id}/edit', [KegiatanController::class, 'edit']);    // Menampilkan halaman form edit kegiatan
+    Route::put('/{id}', [KegiatanController::class, 'update']);       // Menyimpan perubahan data kegiatan
+    Route::delete('/{id}', [KegiatanController::class, 'destroy']);   // Menghapus data kegiatan
+});
+
+Route::get('/kategori-kegiatan/{kategori_id}', [KegiatanController::class, 'index'])->name('kategori.kegiatan');
+
+
 });
