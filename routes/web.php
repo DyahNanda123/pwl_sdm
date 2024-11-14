@@ -7,6 +7,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\KegiatanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DaftarKegiatanController;
 use App\Http\Controllers\KategoriKegiatanController;
 
 /*
@@ -61,5 +62,16 @@ Route::group(['prefix' => 'kategori_kegiatan'], function () {
     Route::get('/{id}/edit', [KategoriKegiatanController::class, 'edit']);  // menampilkan halaman form edit level
     Route::put('/{id}', [KategoriKegiatanController::class, 'update']);     // menyimpan perubahan data level
     Route::delete('/{id}', [KategoriKegiatanController::class, 'destroy']); // menghapus data level
+});
+
+Route::group(['prefix' => 'daftar_kegiatan'], function () {
+    Route::get('/', [DaftarKegiatanController::class, 'index']);          // menampilkan halaman awal level
+    Route::post('/list', [DaftarKegiatanController::class, 'list']);      // menampilkan data level dalam bentuk json untuk datatables
+    Route::get('/create', [DaftarKegiatanController::class, 'create']);   // menampilkan halaman form tambah level
+    Route::post('/', [DaftarKegiatanController::class, 'store']);         // menyimpan data level baru
+    Route::get('/{id}', [DaftarKegiatanController::class, 'show']);       // menampilkan detail level
+    Route::get('/{id}/edit', [DaftarKegiatanController::class, 'edit']);  // menampilkan halaman form edit level
+    Route::put('/{id}', [DaftarKegiatanController::class, 'update']);     // menyimpan perubahan data level
+    Route::delete('/{id}', [DaftarKegiatanController::class, 'destroy']); // menghapus data level
 });
 });

@@ -6,6 +6,7 @@ use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class UserController extends Controller
 {
@@ -62,9 +63,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'NIP'      => 'required|string|min:3|unique:m_user,NIP',
+            'NIP'      => 'required|string|min:3|unique:user,NIP',
             'nama'     => 'required|string|max:100',
-            'email'    => 'required|email|unique:m_user,email',
+            'email'    => 'required|email|unique:user,email',
             'password' => 'required|min:5',
             'role'     => 'required|string|max:50' // Menambahkan validasi role
         ]);
@@ -115,9 +116,9 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'NIP'      => 'required|string|min:3|unique:m_user,NIP,' . $id . ',user_id',
+            'NIP'      => 'required|string|min:3|unique:user,NIP,' . $id . ',user_id',
             'nama'     => 'required|string|max:100',
-            'email'    => 'required|email|unique:m_user,email,' . $id . ',user_id',
+            'email'    => 'required|email|unique:user,email,' . $id . ',user_id',
             'password' => 'nullable|min:5',
             'role'     => 'required|string|max:50'
         ]);

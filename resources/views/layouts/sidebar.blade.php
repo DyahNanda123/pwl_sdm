@@ -19,6 +19,13 @@
                     <p>Dashboard</p>
                 </a>
             </li>
+            {{-- <li class="nav-header">Validasi Registrasi</li>
+            <li class="nav-item">
+                <a href="{{ url('/validasi') }}" class="nav-link {{ ($activeMenu == 'validasi') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user-check"></i> <!-- Menggunakan ikon yang lebih spesifik -->
+                    <p>Validasi Registrasi</p>
+                </a>
+            </li> --}}
             <li class="nav-header">Data Pengguna</li>
             <li class="nav-item">
                 <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level') ? 'active' : '' }}">
@@ -42,7 +49,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/daftar-kegiatan') }}" class="nav-link {{ ($activeMenu == 'daftar-kegiatan') ? 'active' : '' }}">
+                <a href="{{ url('/daftar_kegiatan') }}" class="nav-link {{ ($activeMenu == 'daftar_kegiatan') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-calendar-alt"></i>
                     <p>Daftar Kegiatan</p>
                 </a>
