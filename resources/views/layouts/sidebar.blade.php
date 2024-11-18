@@ -55,9 +55,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/daftar-dosen') }}" class="nav-link {{ ($activeMenu == 'daftar-dosen') ? 'active' : '' }}">
+                <a href="{{ url('/statistik_dosen') }}" class="nav-link {{ ($activeMenu == 'statistik_dosen') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user-tie"></i>
-                    <p>Daftar Dosen</p>
+                    <p>Statistik Dosen</p>
                 </a>
             </li>
         </ul>
