@@ -101,6 +101,8 @@ class LevelController extends Controller
         return view('level.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level' => $level, 'activeMenu' => $activeMenu]);
     }
 
+
+    
     // Menampilkan halaman form edit level
     // public function edit(string $id)
     // {
