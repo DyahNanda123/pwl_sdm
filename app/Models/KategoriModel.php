@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class KategoriModel extends Model
 {
     use HasFactory;
-    protected $table = 'kategori'; // Mendefinisikan nama tabel yang digunakan oleh model ini
+    protected $table = 't_kategori'; // Mendefinisikan nama tabel yang digunakan oleh model ini
     protected $primaryKey = 'kategori_id'; // Mendefinisikan primary key dari tabel yang digunakan
     protected $fillable = ['kategori_kode','kategori_nama'];
     public function kegiatan():HasMany

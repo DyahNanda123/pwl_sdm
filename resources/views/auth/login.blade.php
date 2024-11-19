@@ -4,50 +4,45 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login Pengguna</title>
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
+
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap4.min.css') }}">
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
-    <style>
-        /* Tambahkan style untuk logo */
-        
-        .login-logo {
-            margin-top: 20px; /* Menambahkan jarak di atas logo */
-            margin-bottom: 1px;
-        }
-
-        .login-logo img {
-            width: 200px; /* Sesuaikan ukuran logo */
-            height: auto;
-        }
-    </style>
 </head>
+
 <body class="hold-transition login-page">
     <div class="login-box">
-        <!-- Logo -->
+        <!-- /.login-logo -->
         <div class="card card-outline card-primary">
-            <div class="login-logo">
-                <img src="{{ asset('image/polinemabg.png') }}" alt="Logo"> <!-- Ganti path/to/logo.png dengan lokasi logo -->
+            <div class="card-header text-center">
+                <a href="{{ url('/') }}" class="h1"><b>Admin</b>LTE</a>
             </div>
-            <div class="card-header text-center"><a href="#" class="h1"><b>SIMTI</b></a></div>
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
-                <form action="#" method="POST" id="form-login">
+
+                <form action="{{ url('login') }}" method="POST" id="form-login">
+                    @csrf
                     <div class="input-group mb-3">
-                        <input type="text" id="username" name="username" class="form-control" placeholder="Username">
+                        <input type="text" id="nip" name="nip" class="form-control" placeholder="nip">
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
+                                <span class="fas fa-id-badge"></span>
                             </div>
                         </div>
-                        <small id="error-username" class="error-text text-danger"></small>
+                        <small id="error-nip" class="error-text text-danger"></small>
                     </div>
+
                     <div class="input-group mb-3">
                         <input type="password" id="password" name="password" class="form-control" placeholder="Password">
                         <div class="input-group-append">
@@ -57,10 +52,12 @@
                         </div>
                         <small id="error-password" class="error-text text-danger"></small>
                     </div>
+
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
-                                <input type="checkbox" id="remember"><label for="remember">Remember Me</label>
+                                <input type="checkbox" id="remember">
+                                <label for="remember">Remember Me</label>
                             </div>
                         </div>
                         <!-- /.col -->
@@ -69,72 +66,70 @@
                         </div>
                         <!-- /.col -->
                     </div>
-                    <hr>
-                    <div class="row">
-                        Don't have account? <a href="#">register</a>
-                    </div>
                 </form>
             </div>
-            <footer class="text-center mt-3">
-                <small>2024 &copy; Sistem Informasi Manajemen SDM TI<small>
-            </footer>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
     </div>
     <!-- /.login-box -->
+
     <!-- jQuery -->
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
+
     <!-- Bootstrap 4 -->
     <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
     <!-- jquery-validation -->
     <script src="{{ asset('adminlte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('adminlte/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+
     <!-- SweetAlert2 -->
     <script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
     <!-- AdminLTE App -->
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $(document).ready(function() {
             $("#form-login").validate({
                 rules: {
-                    username: {
-                        required: true,
-                        minlength: 4,
-                        maxlength: 20
-                    },
-                    password: {
-                        required: true,
-                        minlength: 6,
-                        maxlength: 20
-                    }
+                    nip: { required: true, minlength: 4, maxlength: 20 },
+                    password: { required: true, minlength: 5, maxlength: 20 }
                 },
                 submitHandler: function(form) {
-                    // Simulasi login sukses atau gagal tanpa terhubung ke backend
-                    const username = $('#username').val();
-                    const password = $('#password').val();
-                    
-                    // Tentukan kredensial statis untuk login
-                    const correctUsername = 'admin';
-                    const correctPassword = 'abc123';
-
-                    if (username === correctUsername && password === correctPassword) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: 'Login Berhasil',
-                        }).then(function() {
-                            window.location = response.redirect; // Redirect ke halaman utama atau home
-                        });
-                    } else {
-                        $('#error-username').text('');
-                        $('#error-password').text('');
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Login Gagal',
-                            text: 'Username atau password salah'
-                        });
-                    }
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: $(form).serialize(),
+                        success: function(response) {
+                            if (response.status) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                }).then(function() {
+                                    window.location = response.redirect;
+                                });
+                            } else {
+                                $('.error-text').text('');
+                                $.each(response.msgField, function(prefix, val) {
+                                    $('#error-' + prefix).text(val[0]);
+                                });
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Terjadi Kesalahan',
+                                    text: response.message
+                                });
+                            }
+                        }
+                    });
                     return false;
                 },
                 errorElement: 'span',
