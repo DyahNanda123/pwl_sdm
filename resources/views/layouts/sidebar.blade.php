@@ -59,7 +59,7 @@
                     <p>Detail Progres</p>
                 </a>
               </li>
-              <!-- Menambahkan Menu Logout -->
+              <!-- Menambahkan Menuuuu Logout -->
               <li class="nav-header">Logout</li>
               <li class="nav-item">
                 <a href="{{ url('logout') }}" class="nav-link"
