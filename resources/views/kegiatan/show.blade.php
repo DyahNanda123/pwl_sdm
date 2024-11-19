@@ -6,7 +6,7 @@
             <div class="card-tools"></div>
         </div>
         <div class="card-body">
-            @if(empty($kegiatan) || !$kegiatan)
+            @empty($kegiatan) 
                 <div class="alert alert-danger alert-dismissible">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
                     Data yang Anda cari tidak ditemukan.
@@ -18,8 +18,8 @@
                         <td>{{ $kegiatan->kegiatan_id }}</td>
                     </tr>
                     <tr>
-                        <th>Kode Kegiatan</th>
-                        <td>{{ $kegiatan->kegiatan_kode }}</td>
+                        <th>Kategori</th>
+                        <td>{{ $kegiatan->kategori->kategori_nama }}</td>
                     </tr>
                     <tr>
                         <th>Nama Kegiatan</th>
@@ -44,10 +44,6 @@
                     <tr>
                         <th>Jenis Kegiatan</th>
                         <td>{{ $kegiatan->jenis_kegiatan }}</td>
-                    </tr>
-                    <tr>
-                        <th>Kategori</th>
-                        <td>{{ $kegiatan->kategori->kategori_nama }}</td>
                     </tr>
                 </table>
             @endif

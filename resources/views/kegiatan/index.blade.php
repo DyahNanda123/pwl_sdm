@@ -40,7 +40,6 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Kode Kegiatan</th>
                         <th>Nama Kegiatan</th>
                         <th>Deskripsi</th>
                         <th>Tanggal Mulai</th>
@@ -48,117 +47,98 @@
                         <th>Status</th>
                         <th>Jenis Kegiatan</th>
                         <th>Kategori</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody></tbody>
             </table>
-            <div id="noDataMessage" style="display: none; text-align: center; margin-top: 20px;">
-                <p>No data available</p>
-            </div>
         </div>
     </div>
     <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false"
         data-width="75%"></div>
 @endsection
-
 @push('js')
-<script>
-    function modalAction(url = '') {
-        $('#myModal').load(url, function() {
-            $('#myModal').modal('show');
-        });
-    }
-
-    var tableKegiatan;
-    $(document).ready(function() {
-        tableKegiatan = $('#table-kegiatan').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                "url": "{{ url('kegiatan/list') }}",
-                "dataType": "json",
-                "type": "POST",
-                success: function(data) {
-                        if (data.data.length === 0) {
-                            $('#noDataMessage').show();  // Menampilkan pesan jika data kosong
-                        } else {
-                            $('#noDataMessage').hide();  // Menyembunyikan pesan jika data ada
-                        }
-                    },
-                    error: function() {
-                        $('#noDataMessage').show();  // Menampilkan pesan jika terjadi error dalam mengambil data
+    <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
+        var tableKegiatan;
+        $(document).ready(function() {
+            tableKegiatan = $('#table-kegiatan').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    "url": "{{ url('kegiatan/list') }}",
+                    "dataType": "json",
+                    "type": "POST",
+                    "data": function(d) {
+                        d.filter_kategori = $('.filter_kategori').val();
                     }
-            },
-            columns: [
-                {
+                },
+                columns: [{
                     data: "DT_RowIndex",
                     className: "text-center",
                     orderable: false,
                     searchable: false
-                },
-                {
-                    data: "kegiatan_kode",
-                    className: "",
-                    orderable: true,
-                    searchable: true
-                },
-                {
+                }, {
                     data: "kegiatan_nama",
                     className: "",
                     orderable: true,
-                    searchable: true
-                },
-                {
+                    searchable: true,
+                }, {
                     data: "deskripsi",
                     className: "",
+                    width: "15%",
                     orderable: true,
-                    searchable: true
-                },
-                {
+                    searchable: true,
+                }, {
                     data: "tanggal_mulai",
                     className: "",
                     orderable: true,
-                    searchable: false
-                },
-                {
+                    searchable: false,
+                    render: function(data) {
+                        return new Date(data).toLocaleDateString('id-ID');
+                    }
+                }, {
                     data: "tanggal_selesai",
                     className: "",
                     orderable: true,
-                    searchable: false
-                },
-                {
+                    searchable: false,
+                    render: function(data) {
+                        return new Date(data).toLocaleDateString('id-ID');
+                    }
+                }, {
                     data: "status",
                     className: "",
                     orderable: true,
-                    searchable: false
-                },
-                {
+                    searchable: true
+                }, {
                     data: "jenis_kegiatan",
                     className: "",
                     orderable: true,
-                    searchable: false
-                },
-                {
+                    searchable: true
+                }, {
                     data: "kategori.kategori_nama",
                     className: "",
                     orderable: true,
                     searchable: false
+                }, {
+                    data: "aksi",
+                    className: "text-center",
+                    orderable: false,
+                    searchable: false
+                }]
+            });
+            $('#table-kegiatan_filter input').unbind().bind().on('keyup', function(e) {
+                if (e.keyCode == 13) { // enter key
+                    tableKegiatan.search(this.value).draw();
                 }
-            ],
-                language: {
-                    emptyTable: "No data available in table"
-                }
+            });
+            $('.filter_kategori').change(function() {
+                tableKegiatan.draw();
+            });
         });
-
-        $('#table-kegiatan_filter input').unbind().bind().on('keyup', function(e) {
-            if (e.keyCode == 13) { // enter key
-                tableKegiatan.search(this.value).draw();
-            }
-        });
-
-        $('.filter_kategori').change(function() {
-            tableKegiatan.draw();
-        });
-    });
-</script>
+    </script>
+@endpush
