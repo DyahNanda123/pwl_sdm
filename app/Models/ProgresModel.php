@@ -22,4 +22,9 @@ class ProgresModel extends Model
     {
         return $this->belongsTo(KegiatanModel::class, 'kegiatan_id', 'kegiatan_id');
     }
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(userModel::class, 'nip', 'nip');
+    }
+
 }
