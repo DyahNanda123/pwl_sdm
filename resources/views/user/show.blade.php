@@ -19,7 +19,7 @@
                     </tr>
                     <tr>
                         <th>NIP</th>
-                        <td>{{ $user->nip }}</td>
+                        <td>{{ $user->NIP }}</td>
                     </tr>
                     <tr>
                         <th>Nama</th>
@@ -30,8 +30,9 @@
                         <td>{{ $user->email }}</td>
                     </tr>
                     <tr>
-                        <th>Role</th>
-                        <td>{{ $user->role->role_nama }}</td>
+                        <th>Level</th>
+                        <td>{{ $user->level->level_id ?? '-' }}</td>
+
                     </tr>
                     <tr>
                         <th>Password</th>

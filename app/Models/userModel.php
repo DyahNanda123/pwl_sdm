@@ -22,7 +22,7 @@ class UserModel extends Authenticatable implements JWTSubject
     protected $casts = ['password' => 'hashed'];
 
     // Relasi dengan model Level menggunakan kolom role
-    public function role(): BelongsTo
+    public function level(): BelongsTo
     {
         return $this->belongsTo(LevelModel::class, 'role', 'level_id');
     }

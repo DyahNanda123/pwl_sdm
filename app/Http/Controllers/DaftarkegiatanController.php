@@ -67,7 +67,7 @@ class DaftarKegiatanController extends Controller
         ];
 
         $kategoriList = KategoriKegiatan::all();
-        $activeMenu = 'kegiatan';
+        $activeMenu = 'daftar_kegiatan';
 
         return view('daftar_kegiatan.create', [
             'breadcrumb' => $breadcrumb,
@@ -112,7 +112,7 @@ class DaftarKegiatanController extends Controller
         ];
         $activeMenu = 'kegiatan';
 
-        return view('daftarkegiatan.show', [
+        return view('daftar_kegiatan.show', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
             'kegiatan' => $kegiatan,
@@ -126,7 +126,7 @@ class DaftarKegiatanController extends Controller
         $kegiatan = DaftarKegiatan::find($id);
 
         if (!$kegiatan) {
-            return redirect('/daftarkegiatan')->with('error', 'Data kegiatan tidak ditemukan');
+            return redirect('/daftar_kegiatan')->with('error', 'Data kegiatan tidak ditemukan');
         }
 
         $breadcrumb = (object) [
@@ -139,7 +139,7 @@ class DaftarKegiatanController extends Controller
         $kategoriList = KategoriKegiatan::all();
         $activeMenu = 'kegiatan';
 
-        return view('daftarkegiatan.edit', [
+        return view('daftar_kegiatan.edit', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
             'kegiatan' => $kegiatan,
@@ -163,12 +163,12 @@ class DaftarKegiatanController extends Controller
         $kegiatan = DaftarKegiatan::find($id);
 
         if (!$kegiatan) {
-            return redirect('/daftarkegiatan')->with('error', 'Data kegiatan tidak ditemukan');
+            return redirect('/daftar_kegiatan')->with('error', 'Data kegiatan tidak ditemukan');
         }
 
         $kegiatan->update($request->all());
 
-        return redirect('/daftarkegiatan')->with('success', 'Data kegiatan berhasil diubah');
+        return redirect('/daftar_kegiatan')->with('success', 'Data kegiatan berhasil diubah');
     }
 
     // Menghapus data kegiatan
@@ -177,7 +177,7 @@ class DaftarKegiatanController extends Controller
         $kegiatan = DaftarKegiatan::find($id);
 
         if (!$kegiatan) {
-            return redirect('/daftarkegiatan')->with('error', 'Data kegiatan tidak ditemukan');
+            return redirect('/daftar_kegiatan')->with('error', 'Data kegiatan tidak ditemukan');
         }
 
         try {

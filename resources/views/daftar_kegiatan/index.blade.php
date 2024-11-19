@@ -58,7 +58,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ url('daftarkegiatan/list') }}",
+                    url: "{{ url('daftar_kegiatan/list') }}",
                     type: "POST",
                     data: function(d){
                         d.kategori_id = $('#kategori_id').val();

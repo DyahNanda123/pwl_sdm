@@ -13,7 +13,7 @@
                 </div>
                 <a href="{{ url('daftarkegiatan') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
             @else
-                <form method="POST" action="{{ url('/daftarkegiatan/' . $kegiatan->id) }}" class="form-horizontal">
+                <form method="POST" action="{{ url('daftar_kegiatan' . $kegiatan->id) }}" class="form-horizontal">
                     @csrf
                     {!! method_field('PUT') !!}
                     <div class="form-group row">
@@ -64,8 +64,8 @@
                         <div class="col-10">
                             <select class="form-control" id="kategori_id" name="kategori_id" required>
                                 <option value="">- Pilih Kategori -</option>
-                                @foreach($kategori as $item)
-                                    <option value="{{ $item->id }}" {{ old('kategori_id', $daftar_kegiatan->kategori_id) == $item->id ? 'selected' : '' }}>{{ $item->nama_kategori }}</option>
+                                @foreach($kategoriList as $k)
+                                    <option value="{{ $k->kategori_id }}">{{ $k->nama_kategori }}</option>
                                 @endforeach
                             </select>
                             @error('kategori_id')
@@ -77,7 +77,7 @@
                         <label class="col-2 control-label col-form-label"></label>
                         <div class="col-10">
                             <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-                            <a class="btn btn-sm btn-default ml-1" href="{{ url('daftarkegiatan') }}">Kembali</a>
+                            <a class="btn btn-sm btn-default ml-1" href="{{ url('/daftar_kegiatan') }}">Kembali</a>
                         </div>
                     </div>
                 </form>

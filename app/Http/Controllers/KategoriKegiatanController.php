@@ -38,7 +38,7 @@ class KategoriKegiatanController extends Controller
         return DataTables::of($kategoriKegiatan)
             ->addIndexColumn()
             ->addColumn('aksi', function ($kategoriKegiatan) { // menambahkan kolom aksi
-                $btn = '<a href="' . url('/kategori-kegiatan/' . $kategoriKegiatan->id) . '" class="btn btn-info btn-sm">Detail</a> ';
+                $btn = '<a href="' . url('/kategori_kegiatan/' . $kategoriKegiatan->id) . '" class="btn btn-info btn-sm">Detail</a> ';
                 // $btn .= '<a href="' . url('/kategori-kegiatan/' . $kategoriKegiatan->id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
                 // $btn .= '<form class="d-inline-block" method="POST" action="' . 
                 //     url('/kategori-kegiatan/' . $kategoriKegiatan->id) . '">'

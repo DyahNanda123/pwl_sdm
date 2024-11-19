@@ -6,7 +6,7 @@
             <div class="card-tools"></div>
         </div>
         <div class="card-body">
-            @empty($daftar_kegiatan)
+            @empty($user)
                 <div class="alert alert-danger alert-dismissible">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
                     Data yang Anda cari tidak ditemukan.
@@ -15,32 +15,32 @@
                 <table class="table table-bordered table-striped table-hover table-sm">
                     <tr>
                         <th>ID Kegiatan</th>
-                        <td>{{ $daftar_kegiatan->id }}</td>
+                        <td>{{$kegiatan->id }}</td>
                     </tr>
                     <tr>
                         <th>Nama Kegiatan</th>
-                        <td>{{ $daftar_kegiatan->nama_kegiatan }}</td>
+                        <td>{{ $kegiatan->nama_kegiatan }}</td>
                     </tr>
                     <tr>
                         <th>Tanggal Pelaksanaan</th>
-                        <td>{{ $daftar_kegiatan->tanggal_pelaksanaan }}</td>
+                        <td>{{ $kegiatan->tanggal_pelaksanaan }}</td>
                     </tr>
                     <tr>
                         <th>PIC</th>
-                        <td>{{ $daftar_kegiatan->PIC }}</td>
+                        <td>{{ $kegiatan->PIC }}</td>
                     </tr>
                     <tr>
                         <th>Status</th>
-                        <td>{{ $daftar_kegiatan->status }}</td>
+                        <td>{{ $kegiatan->status }}</td>
                     </tr>
                     <tr>
                         <th>Kategori</th>
-                        <td>{{ $daftar_kegiatan->kategori->nama_kategori ?? '-' }}</td> <!-- Mengambil nama kategori dari relasi -->
+                        <td>{{ $kegiatan->kategori->kategori_nama ?? '-' }}</td> <!-- Mengambil nama kategori dari relasi -->
                     </tr>
                     <!-- Menambahkan informasi kategori jika tersedia -->
                     <tr>
                         <th>ID Kategori</th>
-                        <td>{{ $daftar_kegiatan->id_kategori }}</td> <!-- Menampilkan id_kategori -->
+                        <td>{{ $kegiatan->kategori_kegiatan->kategori_id }}</td> <!-- Menampilkan id_kategori -->
                     </tr>
                 </table>
             @endempty

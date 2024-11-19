@@ -50,12 +50,12 @@
                     <label class="col-1 control-label col-form-label">Role</label>
                     <div class="col-11">
                         <select class="form-control" id="role" name="role" required>
-                            <option value="">- Pilih Role -</option>
-                            {{-- @foreach ($roles as $role)
-                                <option value="{{ $role->role_id }}">{{ $role->role_nama }}</option>
-                            @endforeach --}}
+                            <option value="">- Pilih Level -</option>
+                            @foreach($Level as $l)
+                            <option value="{{ $l->level_id }}">{{ $l->level_nama }}</option>
+                        @endforeach
                         </select>
-                        @error('role')
+                        @error('level_id')
                             <small class="form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>

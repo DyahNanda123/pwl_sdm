@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LevelModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -56,7 +57,8 @@ class UserController extends Controller
         ];
 
         $activeMenu = 'user'; // set menu yang sedang aktif
-        return view('user.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+        $Level = LevelModel::all();
+        return view('user.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'Level' => $Level, 'activeMenu' => $activeMenu]);
     }
 
     // Menyimpan data user baru
@@ -67,7 +69,7 @@ class UserController extends Controller
             'nama'     => 'required|string|max:100',
             'email'    => 'required|email|unique:user,email',
             'password' => 'required|min:5',
-            'role'     => 'required|string|max:50' // Menambahkan validasi role
+            'level'     => 'required|string|max:50' // Menambahkan validasi role
         ]);
 
         UserModel::create([
@@ -75,7 +77,7 @@ class UserController extends Controller
             'nama'     => $request->nama,
             'email'    => $request->email,
             'password' => bcrypt($request->password), // password dienkripsi
-            'role'     => $request->role
+            'level'     => $request->Level
         ]);
 
         return redirect('/user')->with('success', 'Data user berhasil disimpan');
@@ -84,7 +86,7 @@ class UserController extends Controller
     // Menampilkan detail user
     public function show(string $id)
     {
-        $user = UserModel::find($id);
+        $user = UserModel::with('level')->find($id);
         $breadcrumb = (object) [
             'title' => 'Detail User',
             'list' => ['Home', 'User', 'Detail']
@@ -93,7 +95,8 @@ class UserController extends Controller
             'title' => 'Detail user'
         ];
         $activeMenu = 'user';
-        return view('user.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+        $Level = LevelModel::all();
+        return view('user.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'Level' => $Level, 'activeMenu' => $activeMenu]);
     }
 
     // Menampilkan halaman untuk edit user
@@ -108,8 +111,9 @@ class UserController extends Controller
         $page = (object) [
             'title' => 'Edit user'
         ];
+        $Level = LevelModel::all();
         $activeMenu = 'user'; // set menu yang sedang aktif
-        return view('user.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+        return view('user.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'Level' => $Level, 'activeMenu' => $activeMenu]);
     }
 
     // Menyimpan perubahan data user
@@ -120,17 +124,17 @@ class UserController extends Controller
             'nama'     => 'required|string|max:100',
             'email'    => 'required|email|unique:user,email,' . $id . ',user_id',
             'password' => 'nullable|min:5',
-            'role'     => 'required|string|max:50'
+            'level'     => 'required|string|max:50'
         ]);
 
-        $user = UserModel::find($id);
+        $user = UserModel::with('level')->find($id);
 
         $user->update([
             'NIP'      => $request->NIP,
             'nama'     => $request->nama,
             'email'    => $request->email,
             'password' => $request->password ? bcrypt($request->password) : $user->password,
-            'role'     => $request->role
+            'level'     => $request->level
         ]);
 
         return redirect('/user')->with('success', 'Data user berhasil diubah');
