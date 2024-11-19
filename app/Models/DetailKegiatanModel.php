@@ -9,8 +9,8 @@ class DetailKegiatanModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'detail_kegiatan';
-    protected $primaryKey = 'detail_id';
+    protected $table = 't_detail_kegiatan';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'kegiatan_id',   // Foreign key to Kegiatan
         'nip',           // Foreign key to User's NIP
@@ -25,7 +25,7 @@ class DetailKegiatanModel extends Model
     }
 
     // Relationship with User
-    public function user()
+    public function t_user()
     {
         return $this->belongsTo(User::class, 'nip', 'nip');
     }

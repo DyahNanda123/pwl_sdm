@@ -5,12 +5,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-class kegiatanModel extends Model
+class KegiatanModel extends Model
 {
     use HasFactory;
-    protected $table = 'kegiatan'; // Mendefinisikan nama tabel yang digunakan oleh model ini
+    protected $table = 't_kegiatan'; // Mendefinisikan nama tabel yang digunakan oleh model ini
     protected $primaryKey = 'kegiatan_id'; // Mendefinisikan primary key dari tabel yang digunakan
-    protected $fillable = ['kategori_id','kegiatan_kode','kegiatan_nama', 'deskripsi', 'tanggal_mulai', 'tanggal_selesai', 'status', 'jenis_kegiatan'];
+    protected $fillable = ['kategori_id','kegiatan_nama', 'deskripsi', 'tanggal_mulai', 'tanggal_selesai', 'status', 'jenis_kegiatan'];
     public function kategori():BelongsTo
     {
         return $this->belongsTo(KategoriModel::class, 'kategori_id','kategori_id');
