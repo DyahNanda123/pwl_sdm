@@ -6,7 +6,7 @@
             <div class="card-tools"></div>
         </div>
         <div class="card-body">
-            @empty($user)
+            @empty($kegiatan) <!-- Menggunakan $kegiatan sebagai pengganti $user -->
                 <div class="alert alert-danger alert-dismissible">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
                     Data yang Anda cari tidak ditemukan.
@@ -35,13 +35,16 @@
                     </tr>
                     <tr>
                         <th>Kategori</th>
-                        <td>{{ $kegiatan->kategori->kategori_nama ?? '-' }}</td> <!-- Mengambil nama kategori dari relasi -->
+                        <td>{{ $kegiatan->kategori->nama_kategori ?? '-' }}</td> <!-- Mengambil nama kategori dari relasi -->
                     </tr>
-                    <!-- Menambahkan informasi kategori jika tersedia -->
                     <tr>
-                        <th>ID Kategori</th>
-                        <td>{{ $kegiatan->kategori_kegiatan->kategori_id }}</td> <!-- Menampilkan id_kategori -->
+                        <th>Deskripsi</th>
+                        <td>{{ $kegiatan->deskripsi ?? '-' }}</td> <!-- Menampilkan deskripsi -->
                     </tr>
+                    {{-- <tr>
+                        <th>ID Kategori</th>
+                        <td>{{ $kegiatan->id_kategori }}</td> <!-- Menampilkan id_kategori -->
+                    </tr> --}}
                 </table>
             @endempty
             <a href="{{ url('daftar_kegiatan') }}" class="btn btn-sm btn-default mt-2">Kembali</a>

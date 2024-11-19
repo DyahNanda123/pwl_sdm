@@ -15,9 +15,8 @@ class KategoriKegiatan extends Model
 
     protected $fillable = ['nama_kategori', 'deskripsi']; // Kolom yang bisa diisi secara massal
 
-    // Contoh relasi jika KategoriKegiatan memiliki banyak kegiatan
-    // public function kegiatan(): HasMany
-    // {
-    //     return $this->hasMany(Kegiatan::class, 'kategori_id', 'id');
-    // }
+    public function kegiatan(): HasMany
+    {
+        return $this->hasMany(DaftarKegiatan::class, 'kategori_id', 'id');
+    }
 }

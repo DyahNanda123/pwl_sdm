@@ -13,8 +13,8 @@
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">NIP</label>
                     <div class="col-11">
-                        <input type="text" class="form-control" id="nip" name="nip" value="{{ old('nip') }}" required>
-                        @error('nip')
+                        <input type="text" class="form-control" id="NIP" name="NIP" value="{{ old('NIP') }}" required>
+                        @error('NIP')
                             <small class="form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
@@ -45,21 +45,24 @@
                             <small class="form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">Role</label>
-                    <div class="col-11">
-                        <select class="form-control" id="role" name="role" required>
-                            <option value="">- Pilih Level -</option>
-                            @foreach($Level as $l)
-                            <option value="{{ $l->level_id }}">{{ $l->level_nama }}</option>
-                        @endforeach
-                        </select>
-                        @error('level_id')
-                            <small class="form-text text-danger">{{ $message }}</small>
-                        @enderror
+                    <div class="form-group row">
+                        <label class="col-1 control-label col-form-label">Role</label>
+                        <div class="col-11">
+                            <select class="form-control" id="role" name="role" required>
+                                <option value="">- Pilih Level -</option>
+                                @foreach($Level as $l)
+                                    <option value="{{ $l->level_nama }}" 
+                                        {{ old('role') == $l->level_nama ? 'selected' : '' }}>
+                                        {{ $l->level_nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('role')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
-                </div>
+                    
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label"></label>
                     <div class="col-11">
@@ -71,7 +74,3 @@
         </div>
     </div>
 @endsection
-@push('css')
-@endpush
-@push('js')
-@endpush

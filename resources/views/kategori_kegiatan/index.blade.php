@@ -14,22 +14,23 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-12">
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label" for="id">Filter:</label>
                         <div class="col-3">
                             <select class="form-control" id="id" name="id" required>
                                 <option value="">- Semua -</option>
-                                {{-- @foreach($kategori_kegiatan as $item)
+                                {{-- @foreach($kategoriKegiatan as $item)
                                     <option value="{{ $item->id }}">{{ $item->nama_kategori }}</option>
                                 @endforeach --}}
-                            </select>
+ 
+                           {{-- </select>
                             <small class="form-text text-muted">Kategori Kegiatan</small>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <table class="table table-bordered table-striped table-hover table-sm" id="table_kategori_kegiatan">
                 <thead>
                     <tr>

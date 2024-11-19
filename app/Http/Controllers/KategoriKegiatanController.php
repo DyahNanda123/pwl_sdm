@@ -10,20 +10,26 @@ class KategoriKegiatanController extends Controller
 {
     // Menampilkan halaman daftar kategori kegiatan
     public function index()
-    {
-        $breadcrumb = (object) [
-            'title' => 'Daftar Kategori Kegiatan',
-            'list' => ['Home', 'Kategori Kegiatan']
-        ];
-        $page = (object) [
-            'title' => 'Daftar kategori kegiatan yang terdaftar dalam sistem'
-        ];
-        $activeMenu = 'kategori_kegiatan'; // set menu yang sedang aktif
+{
+    $breadcrumb = (object) [
+        'title' => 'Daftar Kategori Kegiatan',
+        'list' => ['Home', 'Kategori Kegiatan']
+    ];
+    $page = (object) [
+        'title' => 'Daftar kategori kegiatan yang terdaftar dalam sistem'
+    ];
+    $activeMenu = 'kategori_kegiatan'; // set menu yang sedang aktif
 
-        $kategoriKegiatan = KategoriKegiatan::all(); // ambil data kategori kegiatan
+    $kategori_kegiatan = KategoriKegiatan::all(); // ubah nama variabel menjadi $kategori_kegiatan
 
-        return view('kategori_kegiatan.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategoriKegiatan' => $kategoriKegiatan, 'activeMenu' => $activeMenu]);
-    }
+    return view('kategori_kegiatan.index', [
+        'breadcrumb' => $breadcrumb,
+        'page' => $page,
+        'kategori_kegiatan' => $kategori_kegiatan, // sesuaikan nama variabel
+        'activeMenu' => $activeMenu
+    ]);
+}
+
 
     // Ambil data kategori kegiatan dalam bentuk JSON untuk datatables
     public function list(Request $request)
@@ -31,9 +37,9 @@ class KategoriKegiatanController extends Controller
         $kategoriKegiatan = KategoriKegiatan::select('id', 'nama_kategori', 'deskripsi');
 
         // Filter data kategori kegiatan berdasarkan ID
-        if ($request->id) {
-            $kategoriKegiatan->where('id', $request->id);
-        }
+        // if ($request->id) {
+        //     $kategoriKegiatan->where('id', $request->id);
+        // }
 
         return DataTables::of($kategoriKegiatan)
             ->addIndexColumn()
@@ -50,36 +56,7 @@ class KategoriKegiatanController extends Controller
             ->make(true);
     }
 
-    // Menampilkan halaman form tambah kategori kegiatan
-    // public function create()
-    // {
-    //     $breadcrumb = (object) [
-    //         'title' => 'Tambah Kategori Kegiatan',
-    //         'list' => ['Home', 'Kategori Kegiatan', 'Tambah']
-    //     ];
-    //     $page = (object) [
-    //         'title' => 'Tambah kategori kegiatan baru'
-    //     ];
-
-    //     $activeMenu = 'kategori_kegiatan'; // set menu yang sedang aktif
-    //     return view('kategori_kegiatan.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
-    // }
-
-    // // Menyimpan data kategori kegiatan baru
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'nama_kategori' => 'required|string|unique:kategori_kegiatan,nama_kategori', // nama_kategori harus unik
-    //         'deskripsi' => 'nullable|string' // deskripsi boleh kosong
-    //     ]);
-
-    //     KategoriKegiatan::create([
-    //         'nama_kategori' => $request->nama_kategori,
-    //         'deskripsi' => $request->deskripsi,
-    //     ]);
-
-    //     return redirect('/kategori-kegiatan')->with('success', 'Data kategori kegiatan berhasil disimpan');
-    // }
+  
 
     // Menampilkan detail kategori kegiatan
     public function show(string $id)
@@ -87,7 +64,7 @@ class KategoriKegiatanController extends Controller
         $kategoriKegiatan = KategoriKegiatan::find($id);
 
         if (!$kategoriKegiatan) {
-            return redirect('/kategori-kegiatan')->with('error', 'Data kategori kegiatan tidak ditemukan');
+            return redirect('/kategori_kegiatan')->with('error', 'Data kategori kegiatan tidak ditemukan');
         }
 
         $breadcrumb = (object) [
@@ -100,65 +77,4 @@ class KategoriKegiatanController extends Controller
         $activeMenu = 'kategori_kegiatan'; // set menu yang sedang aktif
         return view('kategori_kegiatan.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategoriKegiatan' => $kategoriKegiatan, 'activeMenu' => $activeMenu]);
     }
-
-    // Menampilkan halaman form edit kategori kegiatan
-    // public function edit(string $id)
-    // {
-    //     $kategoriKegiatan = KategoriKegiatan::find($id);
-
-    //     if (!$kategoriKegiatan) {
-    //         return redirect('/kategori-kegiatan')->with('error', 'Data kategori kegiatan tidak ditemukan');
-    //     }
-
-    //     $breadcrumb = (object) [
-    //         'title' => 'Edit Kategori Kegiatan',
-    //         'list' => ['Home', 'Kategori Kegiatan', 'Edit']
-    //     ];
-
-    //     $page = (object) [
-    //         'title' => 'Edit kategori kegiatan'
-    //     ];
-
-    //     $activeMenu = 'kategori_kegiatan'; // set menu yang sedang aktif
-    //     return view('kategori_kegiatan.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategoriKegiatan' => $kategoriKegiatan, 'activeMenu' => $activeMenu]);
-    // }
-
-    // // Menyimpan perubahan data kategori kegiatan
-    // public function update(Request $request, string $id)
-    // {
-    //     $request->validate([
-    //         'nama_kategori' => 'required|string|unique:kategori_kegiatan,nama_kategori,' . $id . ',id', // memastikan nama_kategori unik
-    //         'deskripsi' => 'nullable|string'
-    //     ]);
-
-    //     $kategoriKegiatan = KategoriKegiatan::find($id);
-
-    //     if (!$kategoriKegiatan) {
-    //         return redirect('/kategori-kegiatan')->with('error', 'Data kategori kegiatan tidak ditemukan');
-    //     }
-
-    //     $kategoriKegiatan->update([
-    //         'nama_kategori' => $request->nama_kategori,
-    //         'deskripsi' => $request->deskripsi
-    //     ]);
-
-    //     return redirect('/kategori-kegiatan')->with('success', 'Data kategori kegiatan berhasil diubah');
-    // }
-
-    // // Menghapus data kategori kegiatan
-    // public function destroy(string $id)
-    // {
-    //     $kategoriKegiatan = KategoriKegiatan::find($id);
-
-    //     if (!$kategoriKegiatan) {
-    //         return redirect('/kategori-kegiatan')->with('error', 'Data kategori kegiatan tidak ditemukan');
-    //     }
-
-    //     try {
-    //         $kategoriKegiatan->delete(); // Hapus data kategori kegiatan
-    //         return redirect('/kategori-kegiatan')->with('success', 'Data kategori kegiatan berhasil dihapus');
-    //     } catch (\Illuminate\Database\QueryException $e) {
-    //         return redirect('/kategori-kegiatan')->with('error', 'Data kategori kegiatan gagal dihapus karena masih terkait dengan data lain');
-    //     }
-    // }
 }

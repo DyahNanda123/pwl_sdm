@@ -15,12 +15,8 @@ class DaftarKegiatan extends Model
 
     protected $fillable = ['nama_kegiatan', 'deskripsi', 'tanggal', 'kategori_id', 'status']; // Kolom yang bisa diisi secara massal
 
-    /**
-     * Relasi ke model KategoriKegiatan
-     * Setiap DaftarKegiatan terkait dengan satu KategoriKegiatan
-     */
     public function kategori(): BelongsTo
     {
-        return $this->belongsTo(KategoriKegiatan::class, 'kategori_id', 'id');
+        return $this->belongsTo(KategoriKegiatan::class, 'id', 'id');
     }
 }

@@ -80,93 +80,121 @@ class DaftarKegiatanController extends Controller
     // Menyimpan data kegiatan baru
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'id_kategori' => 'required|exists:kategori_kegiatan,id', 
+            'nama_kegiatan' => 'required|string|max:100',
+            'tanggal_pelaksanaan' => 'required|date',
+            'PIC' => 'required|string|max:100',
+            'status' => 'required|in:complete,progres',
+            'deskripsi' => 'nullable|string',
+        ]);
+    
+        DaftarKegiatan::create([
+            'id_kategori' => $request->id,
+            'nama_kegiatan' => $request->nama_kegiatan,
+            'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
+            'PIC' => $request->PIC,
+            'status' => $request->status,
+            'deskripsi' => $request->deskripsi,
+        ]);
+    
+        return redirect('daftar_kegiatan')->with('success', 'Data kegiatan berhasil disimpan');
+    }
+    
+
+
+
+    // Menampilkan detail kegiatan
+    public function show($id)
+{
+    // Mengambil kegiatan beserta relasi kategori
+    $kegiatan = DaftarKegiatan::with('kategori')->find($id);
+
+    // Jika kegiatan tidak ditemukan, redirect dengan pesan error
+    if (!$kegiatan) {
+        return redirect('/daftar_kegiatan')->with('error', 'Data kegiatan tidak ditemukan');
+    }
+
+    // Menyiapkan breadcrumb
+    $breadcrumb = (object) [
+        'title' => 'Detail Kegiatan',
+        'list' => ['Home', 'Kegiatan', 'Detail']
+    ];
+
+    // Menyiapkan informasi halaman
+    $page = (object) [
+        'title' => 'Detail Kegiatan'
+    ];
+
+    // Menu aktif untuk sidebar atau navigasi
+    $activeMenu = 'kegiatan';
+
+    // Mengembalikan view dengan data yang diperlukan
+    return view('daftar_kegiatan.show', [
+        'breadcrumb' => $breadcrumb,
+        'page' => $page,
+        'kegiatan' => $kegiatan,
+        'activeMenu' => $activeMenu
+    ]);
+}
+
+
+    // Menampilkan halaman form edit kegiatan
+    // Controller DaftarKegiatanController.php
+
+public function edit(string $id)
+{
+    $kegiatan = DaftarKegiatan::find($id);
+
+    if (!$kegiatan) {
+        return redirect('/daftar_kegiatan')->with('error', 'Data kegiatan tidak ditemukan');
+    }
+
+    $breadcrumb = (object) [
+        'title' => 'Edit Kegiatan',
+        'list' => ['Home', 'Kegiatan', 'Edit']
+    ];
+    $page = (object) [
+        'title' => 'Edit kegiatan'
+    ];
+    $kategoriList = KategoriKegiatan::all();
+    $activeMenu = 'kegiatan';
+
+    return view('daftar_kegiatan.edit', [
+        'breadcrumb' => $breadcrumb,
+        'page' => $page,
+        'kegiatan' => $kegiatan,  // Ganti daftar_kegiatan menjadi kegiatan
+        'kategoriList' => $kategoriList,
+        'activeMenu' => $activeMenu
+    ]);
+}
+
+public function update(Request $request, string $id)
+    {
         $request->validate([
-            'id_kategori' => 'required|exists:kategori_kegiatan,id',
+            'id_kategori' => 'required|exists:kategori_kegiatan,id',  // Validasi ID kategori
             'nama_kegiatan' => 'required|string|max:100',
             'tanggal_pelaksanaan' => 'required|date',
             'deskripsi' => 'nullable|string',
             'PIC' => 'required|string|max:100',
-            'status' => 'required|in:complete,progres',
+            'status' => 'required|in:complete,progres',  // Perbaiki pengecekan status
         ]);
 
-        DaftarKegiatan::create($request->all());
-
-        return redirect('/daftar_kegiatan')->with('success', 'Data kegiatan berhasil disimpan');
-    }
-
-    // Menampilkan detail kegiatan
-    public function show(string $id)
-    {
         $kegiatan = DaftarKegiatan::with('kategori')->find($id);
 
         if (!$kegiatan) {
             return redirect('/daftar_kegiatan')->with('error', 'Data kegiatan tidak ditemukan');
         }
 
-        $breadcrumb = (object) [
-            'title' => 'Detail Kegiatan',
-            'list' => ['Home', 'Kegiatan', 'Detail']
-        ];
-        $page = (object) [
-            'title' => 'Detail kegiatan'
-        ];
-        $activeMenu = 'kegiatan';
-
-        return view('daftar_kegiatan.show', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'kegiatan' => $kegiatan,
-            'activeMenu' => $activeMenu
+        // Update data kegiatan dengan data dari form
+        $kegiatan->update([
+            'id_kategori' => $request->id_kategori,
+            'nama_kegiatan' => $request->nama_kegiatan,
+            'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
+            'deskripsi' => $request->deskripsi,
+            'PIC' => $request->PIC,
+            'status' => $request->status
         ]);
-    }
-
-    // Menampilkan halaman form edit kegiatan
-    public function edit(string $id)
-    {
-        $kegiatan = DaftarKegiatan::find($id);
-
-        if (!$kegiatan) {
-            return redirect('/daftar_kegiatan')->with('error', 'Data kegiatan tidak ditemukan');
-        }
-
-        $breadcrumb = (object) [
-            'title' => 'Edit Kegiatan',
-            'list' => ['Home', 'Kegiatan', 'Edit']
-        ];
-        $page = (object) [
-            'title' => 'Edit kegiatan'
-        ];
-        $kategoriList = KategoriKegiatan::all();
-        $activeMenu = 'kegiatan';
-
-        return view('daftar_kegiatan.edit', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'kegiatan' => $kegiatan,
-            'kategoriList' => $kategoriList,
-            'activeMenu' => $activeMenu
-        ]);
-    }
-
-    // Menyimpan perubahan data kegiatan
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'id_kategori' => 'required|exists:kategori_kegiatan,id',
-            'nama_kegiatan' => 'required|string|max:100',
-            'tanggal_pelaksanaan' => 'required|date',
-            'deskripsi' => 'nullable|string',
-            'PIC' => 'required|string|max:100',
-            'status' => 'required|in:complete,progres',
-        ]);
-
-        $kegiatan = DaftarKegiatan::find($id);
-
-        if (!$kegiatan) {
-            return redirect('/daftar_kegiatan')->with('error', 'Data kegiatan tidak ditemukan');
-        }
-
-        $kegiatan->update($request->all());
 
         return redirect('/daftar_kegiatan')->with('success', 'Data kegiatan berhasil diubah');
     }

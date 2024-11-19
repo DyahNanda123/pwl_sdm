@@ -47,41 +47,43 @@ class UserController extends Controller
 
     // Menampilkan halaman form tambah user
     public function create()
-    {
-        $breadcrumb = (object) [
-            'title' => 'Tambah User',
-            'list' => ['Home', 'User', 'Tambah']
-        ];
-        $page = (object) [
-            'title' => 'Tambah user baru'
-        ];
+{
+    $breadcrumb = (object) [
+        'title' => 'Tambah User',
+        'list' => ['Home', 'User', 'Tambah']
+    ];
+    $page = (object) [
+        'title' => 'Tambah user baru'
+    ];
 
-        $activeMenu = 'user'; // set menu yang sedang aktif
-        $Level = LevelModel::all();
-        return view('user.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'Level' => $Level, 'activeMenu' => $activeMenu]);
-    }
+    $activeMenu = 'user'; // set menu yang sedang aktif
+    $Level = LevelModel::all(); // Mengambil data level
+    return view('user.create', compact('breadcrumb', 'page', 'Level', 'activeMenu'));
+}
 
-    // Menyimpan data user baru
-    public function store(Request $request)
-    {
-        $request->validate([
-            'NIP'      => 'required|string|min:3|unique:user,NIP',
-            'nama'     => 'required|string|max:100',
-            'email'    => 'required|email|unique:user,email',
-            'password' => 'required|min:5',
-            'level'     => 'required|string|max:50' // Menambahkan validasi role
-        ]);
+// Menyimpan data user baru
+public function store(Request $request)
+{
+    $request->validate([
+        'NIP'      => 'required|string|min:3|unique:user,NIP',
+        'nama'     => 'required|string|max:100',
+        'email'    => 'required|email|unique:user,email',
+        'password' => 'required|min:5',
+        'role'     => 'required|string' // Validasi role sesuai kolom di database
+    ]);
 
-        UserModel::create([
-            'NIP'      => $request->NIP,
-            'nama'     => $request->nama,
-            'email'    => $request->email,
-            'password' => bcrypt($request->password), // password dienkripsi
-            'level'     => $request->Level
-        ]);
+    UserModel::create([
+        'NIP'      => $request->NIP,
+        'nama'     => $request->nama,
+        'email'    => $request->email,
+        'password' => bcrypt($request->password), // Enkripsi password
+        'role'     => $request->role // Simpan role dari input form
+    ]);
 
-        return redirect('/user')->with('success', 'Data user berhasil disimpan');
-    }
+    return redirect('/user')->with('success', 'Data user berhasil disimpan');
+}
+
+
 
     // Menampilkan detail user
     public function show(string $id)
@@ -100,9 +102,9 @@ class UserController extends Controller
     }
 
     // Menampilkan halaman untuk edit user
-    public function edit(string $id)
+    public function edit(string $user_id)
     {
-        $user = UserModel::find($id);
+        $user = UserModel::find($user_id);
 
         $breadcrumb = (object) [
             'title' => 'Edit User',

@@ -43,8 +43,8 @@
                     <div class="col-10">
                         <select class="form-control" id="status" name="status" required>
                             <option value="">- Pilih Status -</option>
-                            <option value="Progress" {{ old('status') == 'Progress' ? 'selected' : '' }}>Progress</option>
-                            <option value="Complete" {{ old('status') == 'Complete' ? 'selected' : '' }}>Complete</option>
+                            <option value="progres" {{ old('status') == 'progres' ? 'selected' : '' }}>progres</option>
+                            <option value="complete" {{ old('status') == 'complete' ? 'selected' : '' }}>complete</option>
                         </select>
                         @error('status')
                             <small class="form-text text-danger">{{ $message }}</small>
@@ -54,13 +54,25 @@
                 <div class="form-group row"> 
                     <label class="col-2 control-label col-form-label">Kategori</label>
                     <div class="col-10">
-                        <select class="form-control" id="kategori_id" name="kategori_id" required>
+                        <select class="form-control" id="id_kategori" name="id_kategori" required>
                             <option value="">- Pilih Kategori -</option>
                             @foreach($kategoriList as $k)
-                                <option value="{{ $k->kategori_id }}">{{ $k->nama_kategori }}</option>
+                                <option value="{{ $k->id }}" 
+                                        {{ old('id_kategori') == $k->id ? 'selected' : '' }}>
+                                    {{ $k->id }}
+                                </option>
                             @endforeach
                         </select>
-                        @error('kategori_id')
+                        @error('id_kategori')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>                
+                <div class="form-group row">
+                    <label class="col-2 control-label col-form-label">Deskripsi</label>
+                    <div class="col-10">
+                        <textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" required>{{ old('deskripsi') }}</textarea>
+                        @error('deskripsi')
                             <small class="form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
